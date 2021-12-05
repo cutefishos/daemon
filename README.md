@@ -1,1 +1,3 @@
-# appmanager
+# CutefishOS Daemon
+
+
