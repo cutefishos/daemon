@@ -1,0 +1,8 @@
+/home/cutefish/Cutefish/daemon/build/CMakeFiles/install/strip.dir
+/home/cutefish/Cutefish/daemon/build/CMakeFiles/install/local.dir
+/home/cutefish/Cutefish/daemon/build/CMakeFiles/install.dir
+/home/cutefish/Cutefish/daemon/build/CMakeFiles/list_install_components.dir
+/home/cutefish/Cutefish/daemon/build/CMakeFiles/rebuild_cache.dir
+/home/cutefish/Cutefish/daemon/build/CMakeFiles/edit_cache.dir
+/home/cutefish/Cutefish/daemon/build/CMakeFiles/cutefish-daemon.dir
+/home/cutefish/Cutefish/daemon/build/CMakeFiles/cutefish-daemon_autogen.dir

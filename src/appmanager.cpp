@@ -37,14 +37,35 @@ AppManager::AppManager(QObject *parent)
 void AppManager::uninstall(const QString &content)
 {
     QApt::Package *package = m_backend->packageForFile(content);
+    const QString &packageName = package->name();
 
     if (package) {
+        for (const QString &item : package->requiredByList()) {
+            QApt::Package *p = m_backend->package(item);
+
+            if (!p || !p->isInstalled())
+                continue;
+
+            if (p->recommendsList().contains(packageName))
+                continue;
+
+            if (p->suggestsList().contains(packageName))
+                continue;
+
+            if (m_backend->package(item)) {
+                m_backend->package(item)->setPurge();
+            }
+        }
+
         m_trans = m_backend->removePackages({package});
+        m_backend->commitChanges();
+
         connect(m_trans, &QApt::Transaction::statusChanged, this, [=] (QApt::TransactionStatus status) {
             if (status == QApt::TransactionStatus::FinishedStatus) {
                 notifyUninstallSuccess();
             }
         });
+
         m_trans->run();
     } else {
         notifyUninstallFailure();

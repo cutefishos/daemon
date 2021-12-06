@@ -1,0 +1,5 @@
+-I/home/cutefish/Cutefish/daemon
+-I/home/cutefish/Cutefish/daemon/build
+-o
+/home/cutefish/Cutefish/daemon/build/appmanageradaptor.moc
+/home/cutefish/Cutefish/daemon/build/appmanageradaptor.h
