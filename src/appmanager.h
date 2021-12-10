@@ -34,8 +34,9 @@ public:
     void uninstall(const QString &content);
 
 private:
-    void notifyUninstallFailure();
-    void notifyUninstallSuccess();
+    void notifyUninstalling(const QString &packageName);
+    void notifyUninstallFailure(const QString &packageName);
+    void notifyUninstallSuccess(const QString &packageName);
 
 private:
     QApt::Backend *m_backend;

@@ -37,9 +37,11 @@ AppManager::AppManager(QObject *parent)
 void AppManager::uninstall(const QString &content)
 {
     QApt::Package *package = m_backend->packageForFile(content);
-    const QString &packageName = package->name();
+    QString packageName;
 
     if (package) {
+        packageName = package->name();
+
         for (const QString &item : package->requiredByList()) {
             QApt::Package *p = m_backend->package(item);
 
@@ -61,18 +63,41 @@ void AppManager::uninstall(const QString &content)
         m_backend->commitChanges();
 
         connect(m_trans, &QApt::Transaction::statusChanged, this, [=] (QApt::TransactionStatus status) {
+
             if (status == QApt::TransactionStatus::FinishedStatus) {
-                notifyUninstallSuccess();
+                notifyUninstallSuccess(packageName);
+            } else if (status == QApt::TransactionStatus::WaitingStatus) {
+                notifyUninstalling(packageName);
             }
         });
 
         m_trans->run();
     } else {
-        notifyUninstallFailure();
+        notifyUninstallFailure(packageName);
     }
 }
 
-void AppManager::notifyUninstallFailure()
+void AppManager::notifyUninstalling(const QString &packageName)
+{
+    QDBusInterface iface("org.freedesktop.Notifications",
+                         "/org/freedesktop/Notifications",
+                         "org.freedesktop.Notifications",
+                         QDBusConnection::sessionBus());
+    if (iface.isValid()) {
+        QList<QVariant> args;
+        args << "cutefish-daemon";
+        args << ((unsigned int) 0);
+        args << "cutefish-installer";
+        args << packageName;
+        args << tr("Uninstalling");
+        args << QStringList();
+        args << QVariantMap();
+        args << (int) 10;
+        iface.asyncCallWithArgumentList("Notify", args);
+    }
+}
+
+void AppManager::notifyUninstallFailure(const QString &packageName)
 {
     QDBusInterface iface("org.freedesktop.Notifications",
                          "/org/freedesktop/Notifications",
@@ -83,7 +108,7 @@ void AppManager::notifyUninstallFailure()
         args << "cutefish-daemon";
         args << ((unsigned int) 0);
         args << "dialog-error";
-        args << "";
+        args << packageName;
         args << tr("Uninstallation failure");
         args << QStringList();
         args << QVariantMap();
@@ -92,7 +117,7 @@ void AppManager::notifyUninstallFailure()
     }
 }
 
-void AppManager::notifyUninstallSuccess()
+void AppManager::notifyUninstallSuccess(const QString &packageName)
 {
     QDBusInterface iface("org.freedesktop.Notifications",
                          "/org/freedesktop/Notifications",
@@ -103,7 +128,7 @@ void AppManager::notifyUninstallSuccess()
         args << "cutefish-daemon";
         args << ((unsigned int) 0);
         args << "process-completed-symbolic";
-        args << "";
+        args << packageName;
         args << tr("Uninstallation successful");
         args << QStringList();
         args << QVariantMap();
