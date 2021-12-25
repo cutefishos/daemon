@@ -20,5 +20,7 @@ jobs:
       run: apt-get install -y equivs curl git devscripts lintian build-essential automake autotools-dev cmake g++
     - name: Install build dependencies
       run: mk-build-deps -i -t "apt-get --yes" -r
+    - name: Fix KF5
+      run: mkdir -p /usr/include/KF5
     - name: Build Package
       run: dpkg-buildpackage -b -uc -us -j$(nproc)
