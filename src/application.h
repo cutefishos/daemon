@@ -20,10 +20,10 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <QApplication>
+#include <QCoreApplication>
 #include "appmanager.h"
 
-class Application : public QApplication
+class Application : public QCoreApplication
 {
     Q_OBJECT
 

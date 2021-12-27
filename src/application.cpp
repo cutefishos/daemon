@@ -20,9 +20,10 @@
 #include "application.h"
 
 #include <QDBusConnection>
+#include <QDebug>
 
 Application::Application(int &argc, char **argv)
-    : QApplication(argc, argv)
+    : QCoreApplication(argc, argv)
 {
 }
 
@@ -34,5 +35,5 @@ int Application::run()
         m_appManager = new AppManager(this);
     }
 
-    return QApplication::exec();
+    return QCoreApplication::exec();
 }

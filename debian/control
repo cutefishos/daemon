@@ -1,4 +1,4 @@
-Source: cutefishos-daemon
+Source: cutefish-daemon
 Section: devel
 Priority: optional
 Maintainer: CutefishOS <support@cutefishos.com>
@@ -13,7 +13,7 @@ Standards-Version: 4.6.0
 Homepage: http://cutefishos.com
 Rules-Requires-Root: no
 
-Package: cutefishos-updator
+Package: cutefish-daemon
 Architecture: any
 Depends: qml-module-qtquick-controls2,
          qml-module-qtquick2,

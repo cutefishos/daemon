@@ -63,7 +63,6 @@ void AppManager::uninstall(const QString &content)
         m_backend->commitChanges();
 
         connect(m_trans, &QApt::Transaction::statusChanged, this, [=] (QApt::TransactionStatus status) {
-
             if (status == QApt::TransactionStatus::FinishedStatus) {
                 notifyUninstallSuccess(packageName);
             } else if (status == QApt::TransactionStatus::WaitingStatus) {
@@ -134,5 +133,11 @@ void AppManager::notifyUninstallSuccess(const QString &packageName)
         args << QVariantMap();
         args << (int) 10;
         iface.asyncCallWithArgumentList("Notify", args);
+    }
+
+    if (m_trans) {
+        m_trans->cancel();
+        m_trans->deleteLater();
+        m_trans = nullptr;
     }
 }
