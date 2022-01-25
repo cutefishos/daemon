@@ -39,5 +39,9 @@ target_link_libraries(cutefish-daemon PRIVATE
     QApt::Main
 )
 
-install(TARGETS ${TARGET} DESTINATION ${CMAKE_INSTALL_BINDIR})
+# install(TARGETS ${TARGET} DESTINATION ${CMAKE_INSTALL_BINDIR})
 
+install(TARGETS ${TARGET} DESTINATION "/usr/bin/")
+
+install(FILES src/com.cutefish.Daemon.conf DESTINATION "/etc/dbus-1/system.d/")
+install(FILES src/com.cutefish.Daemon.service DESTINATION "/usr/share/dbus-1/system-services/")

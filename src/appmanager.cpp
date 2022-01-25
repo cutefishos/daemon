@@ -30,8 +30,16 @@ AppManager::AppManager(QObject *parent)
 {
     m_backend->init();
 
+    QDBusConnection connection = QDBusConnection::systemBus();
+    if (!connection.registerService("com.cutefish.Daemon")) {
+        qDebug() << "Cannot register D-Bus service";
+    }
+
+    if (!connection.registerObject("/AppManager", this)) {
+        qDebug() << "Cannot register object";
+    }
+
     new AppManagerAdaptor(this);
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/AppManager"), this);
 }
 
 void AppManager::uninstall(const QString &content)

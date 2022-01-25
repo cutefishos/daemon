@@ -29,11 +29,14 @@ Application::Application(int &argc, char **argv)
 
 int Application::run()
 {
-    if (!QDBusConnection::sessionBus().registerService("com.cutefish.Daemon")) {
-        return 0;
-    } else {
-        m_appManager = new AppManager(this);
-    }
+//    if (!QDBusConnection::systemBus().registerService("com.cutefish.Daemon")) {
+//        return 0;
+//    } else {
+//        m_appManager = new AppManager(this);
+//    }
+
+//    qDebug() << QDBusConnection::systemBus().registerService("com.cutefish.Daemon") << " registerService";
+    m_appManager = new AppManager(this);
 
     return QCoreApplication::exec();
 }
